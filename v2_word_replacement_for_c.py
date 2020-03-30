@@ -3,8 +3,8 @@ import re
 
 sys.setrecursionlimit(10000)
 
-input_file = r"C:\Users\Denis\Desktop\MMS\headers\cfg\Sirius_model_3_24.cfg"
-output_file = r"C:\Users\Denis\Desktop\MMS\headers\static_model\static_model_Sirius_model_3_24.c"
+INPUT_FILE = r"example_cfg\Sirius_model_3_24.cfg"
+OUTPUT_FILE = r"C:\Users\Denis\Desktop\MMS\headers\static_model\static_model_Sirius_model_3_24.c"
 
 list_LD = []  # список с именами LD
 list_LN = []  # список с именами LN
@@ -38,48 +38,31 @@ out_DA4 = 0
 
 
 def LogialDevice(full_name, name, parent, sibling, first_child):
-    with open(output_file, 'a') as f:
-        list_for_write = "LogicalDevice {} = {}\n" \
-                         "    LogicalDeviceModelType,\n" \
-                         "    \"{}\",\n" \
-                         "    {},\n" \
-                         "    {},\n" \
-                         "    {}\n" \
-                         "{};\n" \
-                         "   \n".format(full_name, "{", name, parent, sibling, first_child, "}")
 
-        f.write(list_for_write)
+    list_for_write =
+    write_to_file(list_for_write)
+
     print(full_name)
-    f.close()
+
+STRING_TEMPLATE_DICT = {
+    'DataObject': '"DataObject {} = {}\n    DataObjectModelType,\n    \"{}\",\n    {},\n    {},\n    {},\n    {}\n"{};\n ',
+    'DataSomething': '...'
+}
+
+def write_to_file(info):
+    with open(OUTPUT_FILE, 'a') as f:
+        f.write(info)
 
 
-def LogicalNode(full_name, name, parent, sibling, first_child):
-    with open(output_file, 'a') as f:
-        list_for_write = "LogicalNode {} = {}\n" \
-                         "    LogicalNodeModelType,\n" \
-                         "    \"{}\",\n" \
-                         "    {},\n" \
-                         "    {},\n" \
-                         "    {},\n" \
-                         "{};\n" \
-                         "   \n".format(full_name, "{", name, parent, sibling, first_child, "}")
 
-        f.write(list_for_write)
-    print(full_name)
-    f.close()
+def LogicalNode(some_dict):
+    info = STRING_TEMPLATE_DICT['DataObject'].format(some_dict)
+    write_to_file(info)
 
 
 def DataObject(full_name, name, parent, sibling, first_child, elementCount=0):
-    with open(output_file, 'a') as f:
-        list_for_write = "DataObject {} = {}\n" \
-                         "    DataObjectModelType,\n" \
-                         "    \"{}\",\n" \
-                         "    {},\n" \
-                         "    {},\n" \
-                         "    {},\n" \
-                         "    {}\n" \
-                         "{};\n" \
-                         "   \n".format(full_name, "{", name, parent, sibling, first_child, elementCount, "}")
+    with open(OUTPUT_FILE, 'a') as f:
+
 
         f.write(list_for_write)
     print(full_name)
@@ -88,7 +71,7 @@ def DataObject(full_name, name, parent, sibling, first_child, elementCount=0):
 
 def DataAttribute(full_name, name, parent, sibling, first_child, elementCount, fc, type, triggerOptions, mmsValue,
                   sAddr=0):
-    with open(output_file, 'a') as f:
+    with open(OUTPUT_FILE, 'a') as f:
         list_for_write = "DataAttribute {} = {}\n" \
                          "    DataAttributeModelType,\n" \
                          "    \"{}\",\n" \
@@ -117,7 +100,7 @@ def DataAttribute(full_name, name, parent, sibling, first_child, elementCount, f
 
 
 def tree_reading():
-    file = open(input_file, 'r')
+    file = open(INPUT_FILE, 'r')
     for line in file.readlines():
         output = line.find('extern LogicalDevice ')
         if output == 0:
@@ -160,7 +143,7 @@ def tree_reading():
                                 list_DA4))
 
 
-def tree_reading2():
+def tree_reading2(input_file):
     level = 0
     file = open(input_file, 'r')
     LD = ""
@@ -177,7 +160,11 @@ def tree_reading2():
     global list_DA2
     global list_DA3
     global list_DA4
-
+dict1 = {
+    'LD': {'LN':{},
+           'parent': ''
+           }
+}
     global list_param_DA1
     global list_param_DA2
     global list_param_DA3
@@ -744,5 +731,14 @@ def some_param_data_attribute(name):
     return data_attribute.get(name, diff_param)
 
 
-tree_reading2()
-LD_handler(list_LD[index_listLD])
+
+
+
+def main(input_file):
+
+    tree_reading2(input_file)
+    LD_handler(list_LD[index_listLD])
+
+
+if __name__ == '__main__':
+    main(INPUT_FILE)
