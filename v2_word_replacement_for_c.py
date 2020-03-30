@@ -3,8 +3,8 @@ import re
 
 sys.setrecursionlimit(10000)
 
-input_file = r"C:\Users\Denis\Desktop\MMS\headers\cfg\Sirius_model_3_24.cfg"
-output_file = r"C:\Users\Denis\Desktop\MMS\headers\static_model\static_model_Sirius_model_3_24.c"
+input_file = r"C:\Users\Denis\PycharmProjects\Parser_cfg_for_iec61850\example_cfg\model_1_10.cfg"
+output_file = r"C:\Users\Denis\Desktop\static_model_Sirius_model_1_10.c"
 
 list_LD = []  # список с именами LD
 list_LN = []  # список с именами LN
@@ -49,7 +49,7 @@ def LogialDevice(full_name, name, parent, sibling, first_child):
                          "   \n".format(full_name, "{", name, parent, sibling, first_child, "}")
 
         f.write(list_for_write)
-    print(full_name)
+    # print(full_name)
     f.close()
 
 
@@ -65,7 +65,7 @@ def LogicalNode(full_name, name, parent, sibling, first_child):
                          "   \n".format(full_name, "{", name, parent, sibling, first_child, "}")
 
         f.write(list_for_write)
-    print(full_name)
+    # print(full_name)
     f.close()
 
 
@@ -82,7 +82,7 @@ def DataObject(full_name, name, parent, sibling, first_child, elementCount=0):
                          "   \n".format(full_name, "{", name, parent, sibling, first_child, elementCount, "}")
 
         f.write(list_for_write)
-    print(full_name)
+    # print(full_name)
     f.close()
 
 
@@ -105,7 +105,7 @@ def DataAttribute(full_name, name, parent, sibling, first_child, elementCount, f
                                          triggerOptions, mmsValue, sAddr, "}")
 
         f.write(list_for_write)
-    print(full_name)
+    # print(full_name)
     f.close()
 
 
@@ -351,7 +351,6 @@ def DO_handler(DO):
     DataObject(full_name, name, parent, sibling, first_child)
 
     if index_listDO >= len(list_DO):
-        print("out_DO = 1")
         out_DO = 1
     DA1_handler(list_DA1[index_listDA1])
 
